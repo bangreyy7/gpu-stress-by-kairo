@@ -1,343 +1,637 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="theme-color" content="#020817">
-<title>KAIRO GPU STRESS ×12</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f8eff7">
+<title>Little Things About Fika</title>
+
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
 *{box-sizing:border-box}
-html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  background:#020817;color:#fff;
-  font-family:Consolas,monospace
+
+body{
+ margin:0;
+ min-height:100vh;
+ font-family:Poppins,sans-serif;
+ background:linear-gradient(145deg,#fff5fa,#f1edff,#fff8f1);
+ color:#493b50;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ padding:20px;
 }
-#gl{
-  position:fixed;inset:0;width:100%;height:100%;
+
+.app{
+ width:100%;
+ max-width:440px;
+ min-height:600px;
+ background:rgba(255,255,255,.78);
+ border:1px solid white;
+ border-radius:30px;
+ padding:22px;
+ box-shadow:0 20px 60px #8c668c22;
+ position:relative;
+ overflow:hidden;
 }
-.vignette{
-  position:fixed;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse,transparent 35%,rgba(0,0,0,.65) 100%);
+
+.top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:20px;
 }
-.hud{
-  position:fixed;top:22px;left:22px;z-index:3;
-  padding:13px 17px;min-width:285px;
-  color:#42eaff;background:rgba(0,8,22,.72);
-  border:1px solid rgba(45,226,255,.8);
-  border-radius:8px;
-  box-shadow:0 0 18px rgba(0,174,255,.15),inset 0 0 15px rgba(0,174,255,.06);
-  font-size:clamp(12px,3.5vw,18px);
-  line-height:1.75;
-  text-shadow:0 0 9px #00cfff;
+
+.logo{
+ font-weight:800;
+ color:#bc78a9;
+ letter-spacing:1px;
+ font-size:14px;
 }
-.hud-title{font-size:1.1em;margin-bottom:1px}
-.rings{
-  position:fixed;z-index:1;
-  width:min(88vw,540px);aspect-ratio:1;
-  left:50%;top:48%;
-  transform:translate(-50%,-50%);
-  border-radius:50%;pointer-events:none;
-  background:
-    repeating-radial-gradient(circle,transparent 0 48px,rgba(255,25,35,.42) 49px 50px,transparent 51px 72px);
-  mask-image:radial-gradient(circle,transparent 0 20%,#000 25% 85%,transparent 90%);
-  animation:rotate 28s linear infinite;
-  filter:drop-shadow(0 0 5px #f22);
+
+.pill{
+ background:#f8e7f3;
+ color:#b36b9c;
+ border-radius:30px;
+ padding:7px 13px;
+ font-size:11px;
 }
-.rings:before,.rings:after{
-  content:"";position:absolute;inset:12%;
-  border:1px solid rgba(255,30,40,.6);border-radius:50%;
-  box-shadow:0 0 14px rgba(255,0,0,.3),inset 0 0 14px rgba(255,0,0,.2);
+
+.hero{
+ text-align:center;
+ padding:25px 5px 15px;
 }
-.rings:after{inset:24%;border-style:dashed;animation:rotate 18s linear infinite reverse}
-@keyframes rotate{to{transform:translate(-50%,-50%) rotate(360deg)}}
-.center{
-  position:fixed;z-index:2;left:50%;top:48%;
-  transform:translate(-50%,-50%);
-  width:100%;text-align:center;pointer-events:none;
+
+.hero img{
+ width:100%;
+ height:220px;
+ object-fit:cover;
+ border-radius:23px;
+ box-shadow:0 10px 25px #b78aa333;
 }
-.core{
-  width:13px;height:13px;margin:auto;border-radius:50%;
-  background:#ff2638;box-shadow:0 0 20px 8px rgba(255,0,30,.5);
+
+h1{
+ font-family:'Playfair Display',serif;
+ font-size:32px;
+ line-height:1.25;
+ margin:22px 0 12px;
+ color:#8e5786;
 }
-.controls{
-  position:fixed;z-index:4;left:0;right:0;bottom:12%;
-  display:flex;justify-content:center;padding:15px;
+
+p{
+ font-size:13px;
+ line-height:1.8;
+ color:#8c7b8e;
 }
+
 button{
-  min-width:230px;padding:15px 27px;
-  color:#fff;background:rgba(25,0,5,.8);
-  border:1px solid #ff3344;border-radius:7px;
-  font-size:clamp(17px,4vw,25px);font-weight:bold;
-  letter-spacing:3px;
-  box-shadow:0 0 15px #f22,inset 0 0 14px rgba(255,0,0,.2);
-  text-shadow:0 0 10px #f22;
+ border:0;
+ cursor:pointer;
+ font-family:Poppins,sans-serif;
+ transition:.2s;
 }
-button:active{transform:scale(.96)}
-button.stopped{border-color:#36eaff;box-shadow:0 0 15px #0af}
-.corner{
-  position:fixed;z-index:3;bottom:22px;left:0;right:0;
-  text-align:center;color:rgba(80,220,255,.7);
-  font-size:11px;letter-spacing:5px;pointer-events:none;
+
+.primary{
+ width:100%;
+ padding:15px;
+ border-radius:16px;
+ color:white;
+ font-weight:700;
+ font-size:14px;
+ background:linear-gradient(110deg,#d98dbb,#a68cdb);
+ box-shadow:0 8px 20px #c38bb544;
+ margin-top:15px;
+}
+
+.primary:active{transform:scale(.97)}
+
+.progress-area{margin:10px 0 20px}
+
+.progress-info{
+ display:flex;
+ justify-content:space-between;
+ font-size:11px;
+ color:#a18ba2;
+ margin-bottom:8px;
+}
+
+.progress{
+ height:7px;
+ background:#f1e5f0;
+ border-radius:20px;
+ overflow:hidden;
+}
+
+.bar{
+ height:100%;
+ width:0%;
+ background:linear-gradient(90deg,#e79ac5,#a68cdb);
+ border-radius:20px;
+ transition:.4s;
+}
+
+.question-img{
+ width:100%;
+ height:190px;
+ object-fit:cover;
+ border-radius:20px;
+ margin-bottom:20px;
+}
+
+.question-number{
+ color:#c27bab;
+ font-size:12px;
+ font-weight:700;
+}
+
+.question-title{
+ font-family:'Playfair Display',serif;
+ color:#80577e;
+ font-size:25px;
+ line-height:1.35;
+ margin:8px 0;
+}
+
+.question-desc{
+ font-size:12px;
+ margin-bottom:18px;
+}
+
+.answer{
+ width:100%;
+ border:1.5px solid #f0e1ef;
+ background:#fffafd;
+ border-radius:14px;
+ padding:14px;
+ margin:6px 0;
+ color:#6f5a70;
+ font-family:Poppins,sans-serif;
+ font-size:13px;
+ outline:none;
+}
+
+.answer:focus{
+ border-color:#cf8cba;
+ box-shadow:0 0 0 3px #dba6ce22;
+}
+
+textarea.answer{
+ min-height:95px;
+ resize:vertical;
+}
+
+.options{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
+}
+
+.option{
+ background:#fff8fd;
+ border:1.5px solid #f0e1ef;
+ border-radius:14px;
+ padding:13px 8px;
+ font-size:12px;
+ color:#755f76;
+}
+
+.option.selected{
+ background:#f8e6f3;
+ border-color:#c57eaf;
+ color:#a14f8d;
+ font-weight:700;
+}
+
+.actions{
+ display:flex;
+ gap:10px;
+ margin-top:15px;
+}
+
+.back{
+ width:85px;
+ background:#f4edf4;
+ color:#977c97;
+ border-radius:15px;
+ font-weight:600;
+}
+
+.actions .primary{margin:0}
+
+.hidden{display:none!important}
+
+.summary{
+ background:#fff8fd;
+ border:1px solid #f0ddec;
+ border-radius:20px;
+ padding:17px;
+ margin-top:20px;
+ text-align:left;
+}
+
+.summary h3{
+ font-family:'Playfair Display',serif;
+ color:#985f91;
+ margin-top:0;
+}
+
+.summary p{
+ border-bottom:1px solid #f0e6ef;
+ padding-bottom:9px;
+ margin:9px 0;
+ font-size:12px;
+}
+
+.final-icon{
+ font-size:55px;
+ margin:10px;
+}
+
+.footer{
+ text-align:center;
+ font-size:10px;
+ color:#b39db2;
+ margin-top:20px;
+}
+
+.fade{
+ animation:fade .4s ease;
+}
+
+@keyframes fade{
+ from{opacity:0;transform:translateY(12px)}
+ to{opacity:1;transform:translateY(0)}
 }
 </style>
 </head>
+
 <body>
+<div class="app">
 
-<canvas id="gl"></canvas>
-<div class="vignette"></div>
+ <div class="top">
+  <div class="logo">✦ LITTLE THINGS</div>
+  <div class="pill">A little introduction ♡</div>
+ </div>
 
-<div class="hud">
-  <div class="hud-title">GPU STRESS ×12</div>
-  <div>FPS: <span id="fps">0.0</span></div>
-  <div>FRAME: <span id="ms">0.00</span> ms</div>
-  <div>RENDER: <span id="res">--</span></div>
+ <!-- HALAMAN AWAL -->
+ <section id="welcome" class="fade">
+  <div class="hero">
+   <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=900" alt="Bunga cantik">
+   <h1>Halo Fika! ♡</h1>
+   <p>
+    Aku mau nanya dikit nih tentang kamu.
+    Tenang aja, cuma 20 pertanyaan kecil
+    supaya kita bisa mengenal kamu lebih jauh!
+   </p>
+   <p>Jawab dengan jujur dan santai yaa ✨</p>
+   <button class="primary" onclick="startQuiz()">Yuk, Mulai! →</button>
+  </div>
+ </section>
+
+ <!-- HALAMAN PERTANYAAN -->
+ <section id="quiz" class="hidden">
+  <div class="progress-area">
+   <div class="progress-info">
+    <span>Kenali Fika lebih dekat ♡</span>
+    <span id="counter">1 / 20</span>
+   </div>
+   <div class="progress">
+    <div class="bar" id="bar"></div>
+   </div>
+  </div>
+
+  <div id="questionBox" class="fade">
+   <img id="qImage" class="question-img" src="" alt="Ilustrasi pertanyaan">
+   <div class="question-number" id="qNumber"></div>
+   <div class="question-title" id="qTitle"></div>
+   <p class="question-desc" id="qDesc"></p>
+   <div id="answerArea"></div>
+  </div>
+
+  <div class="actions">
+   <button class="back" onclick="previous()">← Kembali</button>
+   <button class="primary" id="nextBtn" onclick="next()">Selanjutnya →</button>
+  </div>
+ </section>
+
+ <!-- HALAMAN HASIL -->
+ <section id="finish" class="hidden fade">
+  <div class="hero">
+   <div class="final-icon">🎀</div>
+   <h1>Wah, sudah selesai!</h1>
+   <p>
+    Terima kasih sudah menjawab semua pertanyaannya,
+    Fika! Sekarang kita jadi tahu sedikit lebih banyak
+    tentang kamu.
+   </p>
+  </div>
+
+  <div class="summary" id="summary">
+   <h3>♡ Tentang Fika</h3>
+   <div id="summaryContent"></div>
+  </div>
+
+  <p style="text-align:center;margin-top:20px">
+   Screenshot hasil ini lalu kirim ke Yudi ya! 📸
+  </p>
+
+  <button class="primary" onclick="copySummary()">
+   Salin Hasil Jawaban
+  </button>
+
+  <button class="primary" onclick="shareWhatsApp()"
+   style="background:linear-gradient(110deg,#78cba0,#48a981)">
+   Bagikan ke WhatsApp
+  </button>
+
+  <div class="footer">
+   Made with ♡ just for Fika<br>
+   Dev Kairo — Wahyu
+  </div>
+ </section>
+
+ <div class="footer">A small space to know you better ♡</div>
 </div>
-
-<div class="rings"></div>
-<div class="center"><div class="core"></div></div>
-
-<div class="controls">
-  <button id="toggle">■ STOP TEST</button>
-</div>
-
-<div class="corner">GPU STRESS BY KAIRO</div>
 
 <script>
-(() => {
-"use strict";
+const questions = [
+ {
+  title:"Nama lengkap kamu siapa?",
+  desc:"Biar kita tahu siapa yang sedang kita kenal.",
+  type:"text",
+  img:"photo-1534528741775-53994a69daeb"
+ },
+ {
+  title:"Biasanya kamu dipanggil apa?",
+  desc:"Nama panggilan yang paling kamu suka?",
+  type:"text",
+  img:"photo-1494790108377-be9c29b29330"
+ },
+ {
+  title:"Berapa umur kamu sekarang?",
+  desc:"Isi umur kamu saat ini ya.",
+  type:"text",
+  img:"photo-1511988617509-a57c8a288659"
+ },
+ {
+  title:"Apa hobi yang paling kamu suka?",
+  desc:"Kegiatan yang bikin kamu senang.",
+  type:"text",
+  img:"photo-1524504388940-b1c1722653e1"
+ },
+ {
+  title:"Apa makanan favorit kamu?",
+  desc:"Makanan yang nggak pernah bikin bosan!",
+  type:"text",
+  img:"photo-1546069901-ba9599a7e63c"
+ },
+ {
+  title:"Minuman favorit kamu apa?",
+  desc:"Yang paling sering kamu cari.",
+  type:"text",
+  img:"photo-1498804103079-a6351b050096"
+ },
+ {
+  title:"Warna kesukaan kamu?",
+  desc:"Warna yang paling menggambarkan dirimu.",
+  type:"choice",
+  options:["Pink","Hitam","Putih","Biru","Ungu","Hijau","Merah","Lainnya"],
+  img:"photo-1490750967868-88aa4486c946"
+ },
+ {
+  title:"Kamu lebih suka suasana apa?",
+  desc:"Pilih suasana favoritmu.",
+  type:"choice",
+  options:["Pantai","Pegunungan","Kota","Rumah yang nyaman","Lainnya"],
+  img:"photo-1470770841072-f978cf4d019e"
+ },
+ {
+  title:"Apa genre musik favoritmu?",
+  desc:"Musik apa yang paling sering kamu dengarkan?",
+  type:"text",
+  img:"photo-1516280440614-37939bbacd81"
+ },
+ {
+  title:"Siapa penyanyi favorit kamu?",
+  desc:"Boleh penyanyi lokal maupun luar negeri.",
+  type:"text",
+  img:"photo-1511379938547-c1f69419868d"
+ },
+ {
+  title:"Kamu lebih suka pagi atau malam?",
+  desc:"Pilih waktu favoritmu.",
+  type:"choice",
+  options:["Pagi","Siang","Sore","Malam"],
+  img:"photo-1470252649378-9c29740c9fa8"
+ },
+ {
+  title:"Apa pelajaran favorit kamu?",
+  desc:"Pelajaran yang paling kamu nikmati.",
+  type:"text",
+  img:"photo-1503676260728-1c00da094a0b"
+ },
+ {
+  title:"Apa cita-cita kamu?",
+  desc:"Impian yang ingin kamu wujudkan.",
+  type:"text",
+  img:"photo-1497366754035-f200968a6e72"
+ },
+ {
+  title:"Apa hal kecil yang bikin kamu bahagia?",
+  desc:"Hal sederhana yang bisa membuat harimu lebih baik.",
+  type:"text",
+  img:"photo-1470252649378-9c29740c9fa8"
+ },
+ {
+  title:"Kalau liburan, kamu mau ke mana?",
+  desc:"Tempat impian yang ingin kamu kunjungi.",
+  type:"text",
+  img:"photo-1500530855697-b586d89ba3ee"
+ },
+ {
+  title:"Kamu lebih suka kucing atau anjing?",
+  desc:"Atau mungkin kamu suka keduanya?",
+  type:"choice",
+  options:["Kucing","Anjing","Keduanya","Tidak keduanya"],
+  img:"photo-1514888286974-6c03e2ca1dba"
+ },
+ {
+  title:"Apa sifat yang paling kamu sukai dari dirimu?",
+  desc:"Ceritakan sedikit tentang dirimu.",
+  type:"text",
+  img:"photo-1529139574466-a303027c1d8b"
+ },
+ {
+  title:"Apa yang paling kamu takutkan?",
+  desc:"Boleh jawab singkat atau hal yang membuatmu khawatir.",
+  type:"text",
+  img:"photo-1470770841072-f978cf4d019e"
+ },
+ {
+  title:"Apa harapan terbesar kamu saat ini?",
+  desc:"Sesuatu yang ingin kamu capai atau doakan.",
+  type:"text",
+  img:"photo-1499209974431-9dddcece7f88"
+ },
+ {
+  title:"Ada pesan atau fakta unik tentang kamu?",
+  desc:"Ceritakan sesuatu yang belum tentu orang lain tahu!",
+  type:"textarea",
+  img:"photo-1490750967868-88aa4486c946"
+ }
+];
 
-const canvas=document.getElementById("gl");
-const fpsEl=document.getElementById("fps");
-const msEl=document.getElementById("ms");
-const resEl=document.getElementById("res");
-const toggle=document.getElementById("toggle");
+let current=0;
+let answers=Array(questions.length).fill("");
 
-const gl=canvas.getContext("webgl",{
-  alpha:false,antialias:false,depth:false,stencil:false,
-  powerPreference:"high-performance"
-});
+const $=id=>document.getElementById(id);
 
-if(!gl){
-  fpsEl.textContent="--";
-  msEl.textContent="WEBGL ERROR";
-  toggle.textContent="WEBGL UNAVAILABLE";
-  toggle.disabled=true;
-  return;
+function show(id){
+ ["welcome","quiz","finish"].forEach(x=>$(x).classList.add("hidden"));
+ $(id).classList.remove("hidden");
 }
 
-const vertex=`
-attribute vec2 position;
-varying vec2 uv;
-void main(){
-  uv=position*.5+.5;
-  gl_Position=vec4(position,0.,1.);
-}`;
-
-const fragment=`
-precision highp float;
-varying vec2 uv;
-uniform float time;
-uniform vec2 resolution;
-
-float hash(vec2 p){
-  return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);
+function startQuiz(){
+ show("quiz");
+ renderQuestion();
 }
 
-float noise(vec2 p){
-  vec2 i=floor(p),f=fract(p);
-  f=f*f*(3.-2.*f);
-  return mix(
-    mix(hash(i),hash(i+vec2(1.,0.)),f.x),
-    mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),
-    f.y
+function renderQuestion(){
+ const q=questions[current];
+ $("counter").textContent=(current+1)+" / 20";
+ $("bar").style.width=((current+1)/20*100)+"%";
+ $("qNumber").textContent="PERTANYAAN "+(current+1);
+ $("qTitle").textContent=q.title;
+ $("qDesc").textContent=q.desc;
+ $("qImage").src="https://images.unsplash.com/"+q.img+"?w=900&auto=format&fit=crop";
+
+ const area=$("answerArea");
+ area.innerHTML="";
+
+ if(q.type==="choice"){
+  const wrap=document.createElement("div");
+  wrap.className="options";
+
+  q.options.forEach(option=>{
+   const btn=document.createElement("button");
+   btn.className="option"+(answers[current]===option?" selected":"");
+   btn.textContent=option;
+   btn.onclick=()=>{
+    answers[current]=option;
+    renderQuestion();
+   };
+   wrap.appendChild(btn);
+  });
+  area.appendChild(wrap);
+
+  if(answers[current]==="Lainnya"){
+   const input=document.createElement("input");
+   input.className="answer";
+   input.placeholder="Tulis pilihanmu...";
+   input.value=answers[current+"_other"]||"";
+   input.oninput=()=>answers[current+"_other"]=input.value;
+   area.appendChild(input);
+  }
+ }else{
+  const input=document.createElement(
+   q.type==="textarea"?"textarea":"input"
   );
+  input.className="answer";
+  input.placeholder="Tulis jawaban kamu di sini...";
+  input.value=answers[current];
+  input.oninput=()=>answers[current]=input.value;
+  area.appendChild(input);
+ }
+
+ $("nextBtn").textContent=current===19?"Selesaikan ♡":"Selanjutnya →";
+
+ $("questionBox").classList.remove("fade");
+ void $("questionBox").offsetWidth;
+ $("questionBox").classList.add("fade");
 }
 
-void main(){
-  vec2 p=(uv-.5)*2.;
-  p.x*=resolution.x/resolution.y;
-
-  float n=0.;
-  float energy=0.;
-  vec2 q=p;
-
-  // 12 real shader calculation stages
-  for(int i=0;i<12;i++){
-    float k=float(i)+1.;
-    q=vec2(
-      q.x*cos(.18+k*.012)-q.y*sin(.16),
-      q.x*sin(.16)+q.y*cos(.18+k*.012)
-    );
-
-    float turbulence=noise(q*3.5+k+time*.15);
-    q+=vec2(
-      sin(q.y*4.+time+k),
-      cos(q.x*4.-time*.8+k)
-    )*(.035+turbulence*.025);
-
-    float d=dot(q,q);
-    n+=sin(d*7.+k+time*.7);
-    energy+=cos(q.x*q.y*5.+k+time*.4);
-  }
-
-  float electric=noise(p*8.+time*.3);
-  float lines=abs(sin((p.x+p.y)*15.+n*1.4));
-  float glow=pow(max(0.,1.-abs(n/12.)),5.);
-  float flash=pow(lines,12.)*electric;
-
-  vec3 blue=vec3(.005,.025,.13);
-  vec3 cyan=vec3(.015,.35,.95);
-  vec3 white=vec3(.35,.8,1.);
-
-  vec3 color=mix(blue,cyan,glow*.8+flash*.35);
-  color=mix(color,white,flash*.65);
-  color+=vec3(.02,.08,.3)*abs(energy/12.);
-
-  float edge=smoothstep(1.5,.1,length(p));
-  color*=edge;
-
-  gl_FragColor=vec4(color,1.);
-}`;
-
-function makeShader(type,source){
-  const s=gl.createShader(type);
-  gl.shaderSource(s,source);
-  gl.compileShader(s);
-  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){
-    console.error(gl.getShaderInfoLog(s));
-    return null;
-  }
-  return s;
+function getAnswer(i){
+ if(questions[i].type==="choice" && answers[i]==="Lainnya"){
+  return answers[i+"_other"]||"Belum dijawab";
+ }
+ return answers[i]||"Belum dijawab";
 }
 
-const vs=makeShader(gl.VERTEX_SHADER,vertex);
-const fs=makeShader(gl.FRAGMENT_SHADER,fragment);
-if(!vs||!fs)return;
+function next(){
+ const answer=getAnswer(current);
 
-const program=gl.createProgram();
-gl.attachShader(program,vs);
-gl.attachShader(program,fs);
-gl.linkProgram(program);
-
-if(!gl.getProgramParameter(program,gl.LINK_STATUS)){
-  msEl.textContent="LINK ERROR";
+ if(answer==="Belum dijawab" || !answer.trim()){
+  alert("Isi jawabannya dulu ya, Fika ♡");
   return;
+ }
+
+ if(current<19){
+  current++;
+  renderQuestion();
+ }else{
+  finishQuiz();
+ }
 }
 
-gl.useProgram(program);
-
-const buffer=gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
-gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([
- -1,-1,1,-1,-1,1,
- -1,1,1,-1,1,1
-]),gl.STATIC_DRAW);
-
-const loc=gl.getAttribLocation(program,"position");
-gl.enableVertexAttribArray(loc);
-gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-
-const timeLoc=gl.getUniformLocation(program,"time");
-const resLoc=gl.getUniformLocation(program,"resolution");
-
-let running=false;
-let raf=0;
-let start=0;
-let last=0;
-let frames=0;
-let fpsTime=0;
-let frameSamples=[];
-let lastFrame=0;
-
-function resize(){
-  const ratio=Math.min(window.devicePixelRatio||1,1.5);
-  let w=Math.floor(innerWidth*ratio);
-  let h=Math.floor(innerHeight*ratio);
-
-  // Maximum render budget: 2.5 million pixels.
-  const maxPixels=2500000;
-  if(w*h>maxPixels){
-    const scale=Math.sqrt(maxPixels/(w*h));
-    w=Math.floor(w*scale);
-    h=Math.floor(h*scale);
-  }
-
-  canvas.width=Math.max(1,w);
-  canvas.height=Math.max(1,h);
-  gl.viewport(0,0,w,h);
-  resEl.textContent=w+" × "+h;
+function previous(){
+ if(current>0){
+  current--;
+  renderQuestion();
+ }
 }
 
-function draw(now){
-  if(!running)return;
+function finishQuiz(){
+ show("finish");
 
-  if(!start)start=now;
-  const elapsed=(now-start)/1000;
+ const content=$("summaryContent");
+ content.innerHTML="";
 
-  gl.uniform1f(timeLoc,elapsed);
-  gl.uniform2f(resLoc,canvas.width,canvas.height);
-
-  gl.drawArrays(gl.TRIANGLES,0,6);
-
-  if(lastFrame){
-    const delta=now-lastFrame;
-    if(delta>0&&delta<250){
-      frameSamples.push(delta);
-      if(frameSamples.length>30)frameSamples.shift();
-    }
-  }
-  lastFrame=now;
-
-  frames++;
-  if(now-fpsTime>=1000){
-    const avg=frameSamples.length?
-      frameSamples.reduce((a,b)=>a+b,0)/frameSamples.length:0;
-
-    fpsEl.textContent=avg?(1000/avg).toFixed(1):"0.0";
-    msEl.textContent=avg?avg.toFixed(2):"0.00";
-
-    frames=0;
-    fpsTime=now;
-  }
-
-  raf=requestAnimationFrame(draw);
+ questions.forEach((q,i)=>{
+  const p=document.createElement("p");
+  const strong=document.createElement("strong");
+  strong.textContent=(i+1)+". "+q.title+" ";
+  p.appendChild(strong);
+  p.appendChild(document.createTextNode(getAnswer(i)));
+  content.appendChild(p);
+ });
 }
 
-function startTest(){
-  if(running)return;
-  running=true;
-  start=0;
-  lastFrame=0;
-  fpsTime=performance.now();
-  frames=0;
-  frameSamples=[];
-  toggle.textContent="■ STOP TEST";
-  toggle.classList.remove("stopped");
-  raf=requestAnimationFrame(draw);
+function makeSummary(){
+ let result="♡ TENTANG FIKA ♡\n\n";
+ questions.forEach((q,i)=>{
+  result+=(i+1)+". "+q.title+"\n"+getAnswer(i)+"\n\n";
+ });
+ result+="Wah, sudah selesai! Terima kasih Fika ♡\nDev Kairo — Wahyu";
+ return result;
 }
 
-function stopTest(){
-  running=false;
-  cancelAnimationFrame(raf);
-  toggle.textContent="▶ START TEST";
-  toggle.classList.add("stopped");
+function copySummary(){
+ const text=makeSummary();
+ if(navigator.clipboard && window.isSecureContext){
+  navigator.clipboard.writeText(text)
+   .then(()=>alert("Hasil berhasil disalin! ♡"))
+   .catch(()=>fallbackCopy(text));
+ }else{
+  fallbackCopy(text);
+ }
 }
 
-toggle.addEventListener("click",()=>{
-  if(running)stopTest();
-  else startTest();
-});
+function fallbackCopy(text){
+ const t=document.createElement("textarea");
+ t.value=text;
+ document.body.appendChild(t);
+ t.select();
+ document.execCommand("copy");
+ t.remove();
+ alert("Hasil berhasil disalin! ♡");
+}
 
-document.addEventListener("visibilitychange",()=>{
-  if(document.hidden&&running)stopTest();
-});
-
-window.addEventListener("resize",resize);
-resize();
-startTest();
-
-})();
+function shareWhatsApp(){
+ const text=encodeURIComponent(makeSummary());
+ window.open("https://wa.me/?text="+text,"_blank");
+}
 </script>
 </body>
 </html>
