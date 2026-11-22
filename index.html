@@ -3,280 +3,244 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080609">
-<title>KAIRO GPU ×16</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>KAIRO GPU ×12</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  height:100dvh;
-  overflow:hidden;
-  background:#080609;
-  color:white;
-  font-family:Arial,sans-serif;
-}
-#gpu{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-}
-.glow{
-  position:fixed;
-  width:320px;height:320px;
-  left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  background:#ff003c;
-  opacity:.13;
-  filter:blur(110px);
-}
-.ui{
-  position:relative;
-  z-index:2;
-  width:100%;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
-}
-h1{
-  position:relative;
-  z-index:3;
-  font-size:clamp(27px,8vw,37px);
-  font-weight:900;
-  letter-spacing:2px;
-  text-shadow:0 0 20px #ff1744;
-}
-.fps-area{
-  position:relative;
-  width:100%;
-  height:310px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-top:15px;
-}
-.skull{
-  position:absolute;
-  width:min(330px,90vw);
-  height:310px;
-  opacity:.34;
-  filter:
-    drop-shadow(0 0 8px #ff1744)
-    drop-shadow(0 0 30px #ff003c);
-}
-.fps-content{
-  position:relative;
-  z-index:2;
-}
-#fps{
-  color:#ff1744;
-  font-size:clamp(70px,19vw,100px);
-  font-weight:900;
-  font-variant-numeric:tabular-nums;
-  text-shadow:0 0 25px #ff174488;
-}
-.label{
-  font-size:11px;
-  letter-spacing:7px;
-  color:#ddd;
-}
-.powered{
-  margin-top:25px;
-  color:#888;
-  font-size:11px;
-  letter-spacing:3px;
-}
-#stop{
-  margin-top:35px;
-  width:165px;
-  padding:14px;
-  border:1px solid #ff1744;
-  border-radius:12px;
-  background:#ff17441a;
-  color:white;
-  font-weight:bold;
-  letter-spacing:4px;
-}
-#stop:active{background:#ff1744}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:#fff;font-family:Arial,sans-serif}
+body{display:flex;align-items:center;justify-content:center}
+#gpu{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.overlay{position:relative;z-index:2;text-align:center;width:100%;padding:20px}
+.skull{position:absolute;z-index:-1;left:50%;top:50%;transform:translate(-50%,-50%);font-size:min(78vw,390px);opacity:.10;filter:grayscale(1);pointer-events:none}
+h1{font-size:clamp(30px,8vw,58px);letter-spacing:3px;margin:0;color:#ff3030;text-shadow:0 0 18px #f00}
+.subtitle{font-size:11px;letter-spacing:5px;color:#888;margin-top:8px}
+.fps{font-size:clamp(75px,21vw,145px);font-weight:900;line-height:1.1;margin:35px 0 0;text-shadow:0 0 25px #f22}
+.fps small{font-size:18px;color:#aaa;letter-spacing:3px}
+.status{font-size:12px;color:#ff5555;letter-spacing:3px;margin-top:12px}
+.info{font-size:11px;color:#777;margin-top:12px;line-height:1.8}
+button{margin-top:30px;background:#b90000;color:white;border:1px solid #ff4444;border-radius:8px;padding:14px 45px;font-size:14px;font-weight:bold;letter-spacing:3px}
+button:active{transform:scale(.96)}
+.powered{position:fixed;bottom:22px;left:0;width:100%;text-align:center;color:#555;font-size:11px;letter-spacing:3px}
 </style>
 </head>
 <body>
-
 <canvas id="gpu"></canvas>
-<div class="glow"></div>
 
-<main class="ui">
+<div class="overlay">
+  <div class="skull">☠</div>
   <h1>YOU ARE IDIOT</h1>
-
-  <div class="fps-area">
-    <svg class="skull" viewBox="0 0 300 300"
-         xmlns="http://www.w3.org/2000/svg"
-         fill="none">
-      <path d="M150 20C75 20 32 73 32 145C32 193 56 222 91 241V278H209V241C244 222 268 193 268 145C268 73 225 20 150 20Z"
-        fill="#ff102f" fill-opacity=".10"
-        stroke="#ff1744" stroke-width="8"/>
-      <path d="M63 126C63 96 88 79 116 98L133 146L111 184L71 172Z"
-        fill="#ff1744"/>
-      <path d="M237 126C237 96 212 79 184 98L167 146L189 184L229 172Z"
-        fill="#ff1744"/>
-      <path d="M150 157L127 209H173L150 157Z" fill="#ff1744"/>
-      <path d="M103 232V270M127 232V278M150 232V278M173 232V278M197 232V270"
-        stroke="#ff1744" stroke-width="8" stroke-linecap="round"/>
-      <path d="M32 145H10M268 145H290M150 20V0"
-        stroke="#ff1744" stroke-width="5"/>
-      <path d="M65 58L88 75M235 58L212 75"
-        stroke="#ff1744" stroke-width="5"/>
-    </svg>
-
-    <div class="fps-content">
-      <div id="fps">--</div>
-      <div class="label">FPS</div>
-    </div>
+  <div class="subtitle">KAIRO GPU BENCHMARK ×12</div>
+  <div class="fps"><span id="fps">0</span><small> FPS</small></div>
+  <div class="status" id="status">INITIALIZING WEBGL...</div>
+  <div class="info">
+    SHADER WORKLOAD: 12 ITERATIONS<br>
+    RENDER: <span id="resolution">--</span><br>
+    FRAME RATE: LIVE
   </div>
-
-  <div class="powered">powered by Kairo</div>
   <button id="stop">STOP</button>
-</main>
+</div>
+
+<div class="powered">POWERED BY KAIRO</div>
 
 <script>
-const canvas=document.getElementById("gpu");
-const output=document.getElementById("fps");
-const stopButton=document.getElementById("stop");
+(() => {
+  const canvas = document.getElementById("gpu");
+  const fpsText = document.getElementById("fps");
+  const status = document.getElementById("status");
+  const resolution = document.getElementById("resolution");
+  const button = document.getElementById("stop");
 
-const gl=canvas.getContext("webgl",{
-  alpha:false,
-  antialias:false,
-  powerPreference:"high-performance"
-});
+  const gl = canvas.getContext("webgl", {
+    alpha:false,
+    antialias:false,
+    depth:false,
+    stencil:false,
+    powerPreference:"high-performance"
+  });
 
-let running=false, raf=0, frames=0, last=0;
+  if (!gl) {
+    status.textContent = "WEBGL NOT SUPPORTED";
+    return;
+  }
 
-if(!gl){
-  output.textContent="N/A";
-  stopButton.disabled=true;
-}else{
-const vertex=`
-attribute vec2 position;
-void main(){
- gl_Position=vec4(position,0.,1.);
-}`;
+  const vertexSource = `
+    attribute vec2 position;
+    varying vec2 uv;
+    void main(){
+      uv = position * 0.5 + 0.5;
+      gl_Position = vec4(position,0.0,1.0);
+    }
+  `;
 
-const fragment=`
-precision mediump float;
-uniform vec2 resolution;
-uniform float time;
+  const fragmentSource = `
+    precision highp float;
+    varying vec2 uv;
+    uniform float time;
+    uniform vec2 resolution;
 
-void main(){
- vec2 p=(gl_FragCoord.xy-.5*resolution)/resolution.y;
- float d=length(p);
- float a=atan(p.y,p.x);
- float color=0.0;
+    void main(){
+      vec2 p = (uv - 0.5) * 2.0;
+      p.x *= resolution.x / resolution.y;
 
- for(int i=0;i<16;i++){
-   float n=float(i)+1.0;
-   float wave=sin(d*n*8.0-time*1.5+n);
-   float ring=cos(a*n+time*.3);
-   color+=abs(wave*ring)*.035;
- }
+      float v = 0.0;
+      float a = 0.0;
+      vec2 q = p;
 
- float glow=exp(-d*3.0);
- vec3 c=vec3(.25,.005,.025)*color;
- c+=vec3(.35,.005,.035)*glow;
- gl_FragColor=vec4(c,1.0);
-}`;
+      // KAIRO ×12 shader workload
+      for(int i=0;i<12;i++){
+        float fi = float(i) + 1.0;
+        q = vec2(
+          q.x * cos(0.17 + fi * 0.013) - q.y * sin(0.13),
+          q.x * sin(0.13) + q.y * cos(0.17 + fi * 0.013)
+        );
 
-function compile(type,source){
- const s=gl.createShader(type);
- gl.shaderSource(s,source);
- gl.compileShader(s);
- if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))
-   throw new Error(gl.getShaderInfoLog(s));
- return s;
-}
+        q += vec2(
+          sin(q.y * 3.1 + time * 0.7 + fi),
+          cos(q.x * 2.8 - time * 0.6 + fi)
+        ) * 0.13;
 
-try{
- const program=gl.createProgram();
- gl.attachShader(program,compile(gl.VERTEX_SHADER,vertex));
- gl.attachShader(program,compile(gl.FRAGMENT_SHADER,fragment));
- gl.linkProgram(program);
+        float d = dot(q,q);
+        v += sin(d * (2.0 + fi * 0.2) - time * fi * 0.12);
+        a += cos(q.x * q.y * fi + time * 0.2);
+      }
 
- if(!gl.getProgramParameter(program,gl.LINK_STATUS))
-   throw new Error("Link error");
+      float glow = abs(v / 12.0);
+      float detail = abs(a / 12.0);
 
- gl.useProgram(program);
+      vec3 color = vec3(
+        0.12 + glow * 0.7,
+        0.01 + detail * 0.025,
+        0.01 + glow * 0.025
+      );
 
- const buffer=gl.createBuffer();
- gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
- gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([
-  -1,-1,1,-1,-1,1,-1,1,1,-1,1,1
- ]),gl.STATIC_DRAW);
+      color *= 0.5 + 0.5 * sin(time * 0.5 + uv.xyx * 3.0);
+      gl_FragColor = vec4(color,1.0);
+    }
+  `;
 
- const pos=gl.getAttribLocation(program,"position");
- gl.enableVertexAttribArray(pos);
- gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+  function shader(type, source) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s,source);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){
+      status.textContent = "SHADER ERROR";
+      console.error(gl.getShaderInfoLog(s));
+      return null;
+    }
+    return s;
+  }
 
- const res=gl.getUniformLocation(program,"resolution");
- const time=gl.getUniformLocation(program,"time");
+  const vs = shader(gl.VERTEX_SHADER,vertexSource);
+  const fs = shader(gl.FRAGMENT_SHADER,fragmentSource);
+  if(!vs || !fs) return;
 
- function resize(){
-   const scale=Math.min(devicePixelRatio||1,1.25);
-   canvas.width=Math.floor(innerWidth*scale);
-   canvas.height=Math.floor(innerHeight*scale);
-   gl.viewport(0,0,canvas.width,canvas.height);
- }
- addEventListener("resize",resize);
- resize();
+  const program = gl.createProgram();
+  gl.attachShader(program,vs);
+  gl.attachShader(program,fs);
+  gl.linkProgram(program);
 
- function render(now){
-   if(!running)return;
+  if(!gl.getProgramParameter(program,gl.LINK_STATUS)){
+    status.textContent = "WEBGL LINK ERROR";
+    return;
+  }
 
-   gl.uniform2f(res,canvas.width,canvas.height);
-   gl.uniform1f(time,now/1000);
-   gl.drawArrays(gl.TRIANGLES,0,6);
+  gl.useProgram(program);
 
-   frames++;
-   if(now-last>=1000){
-     output.textContent=Math.round(frames*1000/(now-last));
-     frames=0;
-     last=now;
-   }
-   raf=requestAnimationFrame(render);
- }
+  const vertices = new Float32Array([
+    -1,-1, 1,-1, -1,1,
+    -1,1, 1,-1, 1,1
+  ]);
 
- function start(){
-   if(running)return;
-   running=true;
-   frames=0;
-   last=performance.now();
-   stopButton.textContent="STOP";
-   raf=requestAnimationFrame(render);
- }
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+  gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
 
- function stop(){
-   running=false;
-   cancelAnimationFrame(raf);
-   gl.clearColor(.02,0,.01,1);
-   gl.clear(gl.COLOR_BUFFER_BIT);
-   output.textContent="--";
-   stopButton.textContent="STOPPED";
- }
+  const position = gl.getAttribLocation(program,"position");
+  gl.enableVertexAttribArray(position);
+  gl.vertexAttribPointer(position,2,gl.FLOAT,false,0,0);
 
- stopButton.addEventListener("click",stop);
- document.addEventListener("visibilitychange",()=>{
-   if(document.hidden)stop();
- });
+  const timeLocation = gl.getUniformLocation(program,"time");
+  const resolutionLocation = gl.getUniformLocation(program,"resolution");
 
- start();
-}catch(e){
- console.error(e);
- output.textContent="ERR";
-}
-}
+  let running = false;
+  let frame = 0;
+  let lastTime = 0;
+  let fpsFrames = 0;
+  let fpsStart = 0;
+  let startTime = 0;
+
+  function resize(){
+    // Batas resolusi untuk mencegah penggunaan piksel berlebihan.
+    const ratio = Math.min(window.devicePixelRatio || 1,1.5);
+    let w = Math.floor(innerWidth * ratio);
+    let h = Math.floor(innerHeight * ratio);
+
+    const maxPixels = 2500000;
+    if(w*h > maxPixels){
+      const scale = Math.sqrt(maxPixels/(w*h));
+      w = Math.floor(w*scale);
+      h = Math.floor(h*scale);
+    }
+
+    canvas.width = Math.max(1,w);
+    canvas.height = Math.max(1,h);
+    gl.viewport(0,0,canvas.width,canvas.height);
+    resolution.textContent = canvas.width+" × "+canvas.height;
+  }
+
+  function draw(now){
+    if(!running) return;
+
+    if(!startTime) startTime = now;
+    const elapsed = (now-startTime)/1000;
+
+    gl.uniform1f(timeLocation,elapsed);
+    gl.uniform2f(resolutionLocation,canvas.width,canvas.height);
+    gl.drawArrays(gl.TRIANGLES,0,6);
+
+    fpsFrames++;
+    if(now-fpsStart >= 1000){
+      const fps = Math.round(fpsFrames*1000/(now-fpsStart));
+      fpsText.textContent = fps;
+      fpsFrames = 0;
+      fpsStart = now;
+    }
+
+    frame = requestAnimationFrame(draw);
+  }
+
+  function start(){
+    if(running) return;
+    running = true;
+    startTime = 0;
+    fpsStart = performance.now();
+    fpsFrames = 0;
+    status.textContent = "GPU RENDERING ACTIVE";
+    button.textContent = "STOP";
+    frame = requestAnimationFrame(draw);
+  }
+
+  function stop(){
+    running = false;
+    cancelAnimationFrame(frame);
+    status.textContent = "BENCHMARK STOPPED";
+    button.textContent = "START";
+  }
+
+  button.addEventListener("click",()=>{
+    if(running) stop();
+    else start();
+  });
+
+  document.addEventListener("visibilitychange",()=>{
+    if(document.hidden && running) stop();
+  });
+
+  window.addEventListener("resize",resize);
+
+  resize();
+  start();
+})();
 </script>
 </body>
 </html>
